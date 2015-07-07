@@ -3,8 +3,16 @@
   "version": "0.0.0",
   "description": "",
   "main": "index.js",
+  "browser": {
+    "react": "./shim/react.js"
+  },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "mkdir -p dist; npm run build:html; npm run build:js",
+    "build:watch": "chokidar 'src' -c 'npm run build'",
+    "build:html": "cp src/index.html dist; cp -R vendor/css dist; cp -R vendor/img dist",
+    "build:js": "browserify src/index.js --outfile=dist/index.js --transform=babelify",
+    "postbuild:js": "uglifyjs dist/index.js -m -c > dist/index.min.js"
   },
   "repository": {
     "type": "git",
@@ -14,5 +22,15 @@
   "license": "BSD-2-Clause",
   "bugs": {
     "url": "https://github.com/GuentherGrail/workshop/issues"
+  },
+  "devDependencies": {
+    "mocha": "~2.2.5",
+    "uglifyjs": "~2.4.10"
+  },
+  "dependencies": {
+    "browserify": "~10.2.4",
+    "babelify": "~6.1.2",
+    "react": "~0.13.3",
+    "chokidar-cli": "~0.3.0"
   }
 }
